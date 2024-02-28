@@ -46,9 +46,9 @@ const FCLogin = () => {
     if (userData.userName === "admin" && userData.password === "ad12343211ad") {
       setError("");
       setCurrentUser(userData);
+      location.reload();
       return;
     }
-
     const match = users.find(
       (user) =>
         user.userName === userData.userName &&
@@ -58,6 +58,7 @@ const FCLogin = () => {
     if (match) {
       setError("");
       setCurrentUser(match);
+      location.reload();
       return;
     }
     setError("שם המשתמש או הסיסמה לא תקינים.");

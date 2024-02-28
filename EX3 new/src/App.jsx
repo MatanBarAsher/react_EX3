@@ -46,19 +46,23 @@ function App() {
     };
   });
 
+  const [view, setView] = useState("");
+
   useEffect(() => {
     if (users?.length !== 0) {
       localStorage.setItem("users", JSON.stringify(users));
     }
   }, [users]);
 
-  function ViewProfileOrAdmin() {
+  useEffect(() => {
     if (currentUser.userName === "admin") {
-      return <FCSystemAdmin users={users} />;
+      setView("admin");
     } else if (currentUser.userName !== "") {
-      return <FCProfile currentUser={currentUser} />;
+      setView("profile");
+    } else {
+      setView("");
     }
-  }
+  }, [currentUser, users]);
 
   return (
     <>
@@ -75,7 +79,8 @@ function App() {
           error={error}
         />
         <FCLogin />
-        <ViewProfileOrAdmin />
+        {view === "admin" && <FCSystemAdmin users={users} />}
+        {view === "profile" && <FCProfile currentUser={currentUser} />}
       </div>
     </>
   );
