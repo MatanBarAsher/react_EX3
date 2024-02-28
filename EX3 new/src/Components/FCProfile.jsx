@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import FCEdit from "./FCEdit";
 
 const FCProfile = ({ currentUser }) => {
+  // State to manage the user's profile information
   const [profile, setProfile] = useState(() => {
     let localValue = JSON.parse(localStorage.getItem("current-user"));
     if (localValue?.firstName !== "") {
@@ -20,24 +21,37 @@ const FCProfile = ({ currentUser }) => {
       number: "",
     };
   });
+
+  // State to manage whether the edit modal should be shown
   const [ToShow, setToShow] = useState(false);
+
+  // Effect to update the profile state when the currentUser prop changes
   useEffect(() => {
     setProfile(currentUser);
   }, [currentUser]);
 
+  // Function to handle the "Edit Details" button click
   function handleEditBtn() {
     setToShow(true);
   }
 
+  // Function to handle the "Game" button click
   function handleGameBtn() {
     window.open("https://www.falafelgame.com/");
   }
 
+  // Function to handle the "Log Out" button click
   function handleLogOut() {
     localStorage.removeItem("current-user");
     location.reload();
   }
 
+  // Function to handle modal closing
+  const closeModal = () => {
+    setToShow(false);
+  };
+
+  // rendering the user's profile information and buttons
   return (
     <>
       <div id="profile" className="profile">
@@ -80,7 +94,7 @@ const FCProfile = ({ currentUser }) => {
           </div>
         </div>
       </div>
-      <FCEdit userToEdit={profile} toShow={ToShow} />
+      <FCEdit userToEdit={profile} toShow={ToShow} onClose={closeModal} />
     </>
   );
 };

@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 
 const FCLogin = () => {
+  // State for user list, form data, error messages, and current user
   const [users, setUsers] = useState([]);
   const [data, setData] = useState({ userName: "", password: "" });
   const [error, setError] = useState("");
   const [currentUser, setCurrentUser] = useState(() => {
+    // Load current user from local storage or initialize an empty user object
     let localValue = JSON.parse(localStorage.getItem("current-user"));
     if (localValue?.userName) {
       return localValue;
@@ -23,26 +25,31 @@ const FCLogin = () => {
     };
   });
 
+  // Load users from local storage when the component mounts
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
     setUsers(storedUsers);
   }, []);
 
+  // Handle input change in the form
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
 
+  // Save current user to local storage when it changes
   useEffect(() => {
     if (currentUser.firstName !== "") {
       localStorage.setItem("current-user", JSON.stringify(currentUser));
     }
   }, [currentUser]);
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const userInput = new FormData(e.target);
     const userData = Object.fromEntries(userInput);
 
+    // Check if the user is admin
     if (userData.userName === "admin" && userData.password === "ad12343211ad") {
       setError("");
       setCurrentUser(userData);
@@ -54,16 +61,18 @@ const FCLogin = () => {
         user.userName === userData.userName &&
         user.password === userData.password
     );
-    console.log(match);
+    // Check if there's a match in the users list
     if (match) {
       setError("");
       setCurrentUser(match);
       location.reload();
       return;
     }
+    // Display error if no match found
     setError("שם המשתמש או הסיסמה לא תקינים.");
   };
 
+  // Render the login form
   return (
     <>
       <div id="login">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 const FCEdit = ({ userToEdit, toShow, onClose }) => {
+  // State for form data, error messages, user list, current user, and modal status
   const [data, setData] = useState({
     userName: "",
     password: "",
@@ -15,6 +16,7 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
   });
   const [error, setError] = useState("");
   const [users, setUsers] = useState(() => {
+    // Load users from local storage or initialize an empty array
     const storedUsers = JSON.parse(localStorage.getItem("users"));
     console.log("Stored Users:", storedUsers);
     if (storedUsers) {
@@ -23,6 +25,7 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
     return [];
   });
   const [currentUser, setCurrentUser] = useState(() => {
+    // Load current user from local storage or initialize an empty user object
     let localValue = JSON.parse(localStorage.getItem("current-user"));
     if (localValue?.userName) {
       return localValue;
@@ -43,6 +46,7 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
   const [modalOpen, setModalOpen] = useState(true);
 
   const handleClose = () => {
+    // Close the modal and execute the onClose callback
     setModalOpen(false);
     onClose();
   };
@@ -53,15 +57,18 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
     }
   }, [users]);
 
+  // Handle form input change
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     const result = validationCheck(e.target);
     let resultArray = Object.keys(result).map((key) => result[key]);
     if (Object.keys(resultArray).length === 0) {
+      // Process form data and update user list
       const imageFile = e.target.elements.image.files[0];
       if (imageFile) {
         const reader = new FileReader();
@@ -101,9 +108,11 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
     }
   };
 
+  // Validate form input
   function validationCheck(form) {
     let userForm = new FormData(form);
     let userData = Object.fromEntries(userForm);
+    // Validation logic for each form field
 
     const errors = {};
 
@@ -188,6 +197,7 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
       errors.number = "מספר יכול להכיל ספרות בלבד ואינו יכול להיות שלילי.";
     }
 
+    // Check if a username is available in the user list
     if (!checkUsersList(userData.userName)) {
       errors.avalible = "דוא''ל או שם משתמש כבר בשימוש.";
     }
@@ -206,6 +216,7 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
     return false;
   }
 
+  // Enable/disable image change based on checkbox
   function enableImageChange(e) {
     if (e.target.checked) {
       document.getElementById("imageChange").required = true;
@@ -216,13 +227,17 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
     }
   }
 
+  // Render the modal if toShow prop is true
   if (toShow) {
     return (
       <div className="modal-overlay">
-        <div className="modal">
+        <div className="modal show">
           <h1>עריכת משתמש</h1>
           <form onSubmit={handleSubmit}>
+            {/* Display error message if there is an error */}
             {error && <div className="error">{error}</div>}
+
+            {/* Form fields */}
             <input
               type="text"
               name="userName"
@@ -352,6 +367,7 @@ const FCEdit = ({ userToEdit, toShow, onClose }) => {
       </div>
     );
   }
+  // Return null if toShow is false
   return null;
 };
 

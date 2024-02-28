@@ -3,11 +3,10 @@
 body {
   font-family: "Poppins", "Fredoka", sans-serif;
   max-width: 1600px;
-  margin: auto;
+  margin: 0 auto;
   background-image: url("./assets/background.png");
   background-size: 100%;
   direction: rtl;
-  margin: 0;
   position: sticky;
   top: 0;
 }
@@ -27,7 +26,6 @@ header {
   background-color: #ffffffdb;
   position: sticky;
   height: 100px;
-  top: 0;
   margin-top: 0;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -52,6 +50,17 @@ header > * {
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
+.main > * {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.main > *.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 #login {
   flex: 45%;
   max-width: 350px;
@@ -72,6 +81,9 @@ header > * {
 #profile {
   display: flex;
   gap: 10px;
+  background-color: rgba(88, 88, 122, 0.176);
+  border-radius: 10px;
+  box-shadow: 10px 13px 15px 0px rgba(0, 0, 0, 0.2);
 }
 
 #profileDetails,
@@ -81,11 +93,16 @@ header > * {
   height: 300px;
 }
 
+#profileImg {
+  display: flex;
+}
+
 #profileImg * {
   min-width: 200px;
   max-width: 200px;
   border-radius: 100%;
   margin: auto 0;
+  box-shadow: 10px 13px 15px 0px rgba(0, 0, 0, 0.2);
 }
 
 form {
@@ -113,7 +130,7 @@ form > div {
 .button,
 .btnDelete,
 .btnEdit {
-  font-family: "poppins";
+  font-family: "Poppins";
   margin: 10px;
   padding: 5px;
   background-color: #f2efe56c;
@@ -121,7 +138,7 @@ form > div {
   border: none;
   border-radius: 10px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  transition: 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .button:hover,
@@ -131,7 +148,9 @@ form > div {
 }
 
 .error {
-  color: red;
+  margin: 5px;
+  color: rgb(181, 0, 0);
+  text-align: center;
 }
 
 table {
@@ -152,6 +171,11 @@ table {
 #admin-table tr {
   border-radius: 10px;
   box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  transition: background-color 0.3s ease;
+}
+
+#admin-table tr:hover {
+  background-color: rgb(228, 228, 228);
 }
 
 .btnEdit {
@@ -182,6 +206,12 @@ table {
   max-width: 400px;
   width: 100%;
   box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal.show {
+  opacity: 1;
 }
 
 .modal h1 {

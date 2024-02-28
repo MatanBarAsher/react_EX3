@@ -2,6 +2,7 @@ import { useState } from "react";
 import FCEdit from "./FCEdit";
 
 const FCSystemAdmin = () => {
+  // State for user list, modal visibility, and user to edit
   const [users, setUsers] = useState(() => {
     const storedUsers = JSON.parse(localStorage.getItem("users"));
     console.log("Stored Users:", storedUsers);
@@ -10,8 +11,11 @@ const FCSystemAdmin = () => {
     }
     return [];
   });
+
   const [ToShow, setToShow] = useState(false);
   const [UserToEdit, setUserToEdit] = useState(null);
+
+  // Function to render user rows in the table
   function Users({ list }) {
     let usersTr = [];
 
@@ -44,22 +48,27 @@ const FCSystemAdmin = () => {
 
     return usersTr;
   }
+
+  // Function to handle the edit button click
   function handleEdit(user) {
     setUserToEdit(user);
     setToShow(true);
   }
 
+  // Function to handle the delete button click
   function handleDelete(email) {
     const temp = users.filter((user) => user.email !== email);
     localStorage.setItem("users", JSON.stringify(temp));
     setUsers(temp);
   }
 
+  // Function to close the edit modal
   const closeModal = () => {
     setUserToEdit(null);
     setToShow(false);
   };
 
+  // Render the table and the edit modal
   return (
     <>
       <table id="admin-table">

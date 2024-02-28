@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 const FCRegister = ({ users, setUsers, setError, error }) => {
+  // State to manage user input data
   const [data, setData] = useState({
     userName: "",
     password: "",
@@ -14,16 +15,19 @@ const FCRegister = ({ users, setUsers, setError, error }) => {
     number: "",
   });
 
+  // Function to handle changes in input fields
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
   };
 
+  // Function to handle form submission
   const handleSubmit = (e) => {
     console.log("Current users before adding:", users);
     e.preventDefault();
     const result = validationCheck(e.target);
     let resultArray = Object.keys(result).map((key) => result[key]);
     if (Object.keys(resultArray).length === 0) {
+      // If validation passes, read image file and update users state
       const reader = new FileReader();
       const imageFile = e.target.elements.image.files[0];
       reader.onload = function (event) {
@@ -41,7 +45,7 @@ const FCRegister = ({ users, setUsers, setError, error }) => {
     console.log("Updated users after adding:", users);
   };
 
-  // Move the validationCheck, checkUsersList, and handleSubmit functions here
+  // Validation function to check user input
   function validationCheck(form) {
     let userForm = new FormData(form);
     let userData = Object.fromEntries(userForm);
@@ -141,6 +145,7 @@ const FCRegister = ({ users, setUsers, setError, error }) => {
     return errors;
   }
 
+  // Function to check if user name and email are available
   function checkUsersList(userName, email) {
     let check = [];
     users.forEach((user) => {
