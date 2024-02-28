@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const FCEdit = ({ userToEdit, toShow }) => {
+const FCEdit = ({ userToEdit, toShow, onClose }) => {
   const [data, setData] = useState({
     userName: "",
     password: "",
@@ -40,6 +40,12 @@ const FCEdit = ({ userToEdit, toShow }) => {
       number: "",
     };
   });
+  const [modalOpen, setModalOpen] = useState(true);
+
+  const handleClose = () => {
+    setModalOpen(false);
+    onClose();
+  };
 
   useEffect(() => {
     if (users?.length !== 0) {
@@ -212,9 +218,9 @@ const FCEdit = ({ userToEdit, toShow }) => {
 
   if (toShow) {
     return (
-      <>
-        <div id="edit">
-          <h1>Edit details</h1>
+      <div className="modal-overlay">
+        <div className="modal">
+          <h1>עריכת משתמש</h1>
           <form onSubmit={handleSubmit}>
             {error && <div className="error">{error}</div>}
             <input
@@ -339,11 +345,14 @@ const FCEdit = ({ userToEdit, toShow }) => {
 
             <button type="submit">Edit</button>
           </form>
+          <button type="button" onClick={handleClose}>
+            Close
+          </button>
         </div>
-      </>
+      </div>
     );
   }
-  return <></>;
+  return null;
 };
 
 export default FCEdit;

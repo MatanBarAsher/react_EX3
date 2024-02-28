@@ -46,16 +46,19 @@ const FCSystemAdmin = () => {
   }
   function handleEdit(user) {
     setUserToEdit(user);
-    if (!ToShow) {
-      setToShow(true);
-    } else {
-      setToShow(false);
-    }
+    setToShow(true);
   }
 
   function handleDelete(email) {
-    console.log(email);
+    const temp = users.filter((user) => user.email !== email);
+    localStorage.setItem("users", JSON.stringify(temp));
+    setUsers(temp);
   }
+
+  const closeModal = () => {
+    setUserToEdit(null);
+    setToShow(false);
+  };
 
   return (
     <>
@@ -72,7 +75,7 @@ const FCSystemAdmin = () => {
           <Users list={users} />
         </tbody>
       </table>
-      <FCEdit userToEdit={UserToEdit} toShow={ToShow} />
+      <FCEdit userToEdit={UserToEdit} toShow={ToShow} onClose={closeModal} />
     </>
   );
 };
