@@ -199,11 +199,11 @@ table {
 }
 
 .modal {
-  background: #fff;
+  background: #fffffff0;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
+  max-width: 600px;
   width: 100%;
   box-sizing: border-box;
   opacity: 0;
@@ -225,4 +225,9 @@ table {
   cursor: pointer;
   margin-top: 10px;
   border-radius: 4px;
+}
+
+#editForm {
+  display: flex;
+  flex-direction: row;
 }

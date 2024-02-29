@@ -54,7 +54,7 @@ const FCProfile = ({ currentUser }) => {
   // rendering the user's profile information and buttons
   return (
     <>
-      <div id="profile" className="profile">
+      <div id="profile" className="profile visible">
         <div id="profileImg" className="right profile-image">
           <img src={profile?.image} alt="user image" />
         </div>

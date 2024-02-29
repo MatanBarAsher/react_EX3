@@ -71,7 +71,7 @@ const FCSystemAdmin = () => {
   // Render the table and the edit modal
   return (
     <>
-      <table id="admin-table">
+      <table id="admin-table" className="visible">
         <tbody>
           <tr>
             <th>שם משתמש</th>
