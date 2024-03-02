@@ -1,53 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import "./App.css";
-import FCLogin from "./Components/FCLogin";
-import FCProfile from "./Components/FCProfile";
-import FCSystemAdmin from "./Components/FCSystemAdmin";
-import FCRegister from "./Components/FCRegister";
+import { FCProfile, FCSystemAdmin, FCLogin, FCRegister } from "./Components";
+import { PROFILE_PROPS } from "./constants";
 
 function App() {
   // State for user data, error messages, user list, current user, and view
-  const [data, setData] = useState({
-    userName: "",
-    password: "",
-    image: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    dateOfBirth: "",
-    city: "",
-    street: "",
-    number: "",
-  });
   const [error, setError] = useState("");
   const [users, setUsers] = useState(() => {
     // Load users from local storage or initialize an empty array
-    const storedUsers = JSON.parse(localStorage.getItem("users"));
+    const storedUsers = [JSON.parse(localStorage.getItem("users"))].flat();
     console.log("Stored Users:", storedUsers);
-    if (storedUsers) {
-      return storedUsers;
-    }
-    return [];
+    return storedUsers ?? [];
   });
-  const [currentUser, setCurrentUser] = useState(() => {
+  const currentUser = useMemo(() => {
     // Load current user from local storage or initialize an empty user object
-    let localValue = JSON.parse(localStorage.getItem("current-user"));
-    if (localValue?.userName) {
-      return localValue;
-    }
-    return {
-      userName: "",
-      password: "",
-      image: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      dateOfBirth: "",
-      city: "",
-      street: "",
-      number: "",
-    };
-  });
+    const localValue = JSON.parse(localStorage.getItem("current-user"));
+    return localValue?.userName ? localValue : PROFILE_PROPS;
+  }, []);
 
   const [view, setView] = useState("");
 
@@ -81,7 +50,7 @@ function App() {
       <header>
         <h1>ניהול משתמשים</h1>
         <br />
-        <p>ברוך הבא, {currentUser.userName}</p>
+        {currentUser.userName && <p>ברוך הבא, {currentUser.userName}</p>}
       </header>
       <div className="main">
         {/* Registration component */}
