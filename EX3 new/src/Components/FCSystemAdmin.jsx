@@ -1,49 +1,48 @@
 import { useState } from "react";
-import FCEdit from "./FCEdit";
+import { FCEdit } from "./FCEdit";
 
-const FCSystemAdmin = () => {
+export const FCSystemAdmin = () => {
   // State for user list, modal visibility, and user to edit
   const [users, setUsers] = useState(() => {
-    const storedUsers = JSON.parse(localStorage.getItem("users"));
+    const storedUsers = [JSON.parse(localStorage.getItem("users"))].flat();
     console.log("Stored Users:", storedUsers);
-    if (storedUsers) {
-      return storedUsers;
-    }
-    return [];
+    return storedUsers ?? [];
   });
 
-  const [ToShow, setToShow] = useState(false);
+  const [show, setShow] = useState(false);
   const [UserToEdit, setUserToEdit] = useState(null);
 
   // Function to render user rows in the table
   function Users({ list }) {
-    let usersTr = [];
+    const usersTr = [];
 
     list.forEach((user) => {
-      usersTr.push(
-        <tr key={user.email}>
-          <td>{user.userName}</td>
-          <td>
-            {user.firstName} {user.lastName}
-          </td>
-          <td>{user.dateOfBirth}</td>
-          <td>
-            {user.street} {user.number}, {user.city}
-          </td>
-          <td>{user.email}</td>
-          <td>
-            <button className="btnEdit" onClick={() => handleEdit(user)}>
-              ✏️
-            </button>
-            <button
-              className="btnDelete"
-              onClick={() => handleDelete(user.email)}
-            >
-              ❌
-            </button>
-          </td>
-        </tr>
-      );
+      if (user.firstName !== "") {
+        usersTr.push(
+          <tr key={user.email}>
+            <td>{user.userName}</td>
+            <td>
+              {user.firstName} {user.lastName}
+            </td>
+            <td>{user.dateOfBirth}</td>
+            <td>
+              {user.street} {user.number}, {user.city}
+            </td>
+            <td>{user.email}</td>
+            <td>
+              <button className="btnEdit" onClick={() => handleEdit(user)}>
+                ✏️
+              </button>
+              <button
+                className="btnDelete"
+                onClick={() => handleDelete(user.email)}
+              >
+                ❌
+              </button>
+            </td>
+          </tr>
+        );
+      }
     });
 
     return usersTr;
@@ -52,7 +51,7 @@ const FCSystemAdmin = () => {
   // Function to handle the edit button click
   function handleEdit(user) {
     setUserToEdit(user);
-    setToShow(true);
+    setShow(true);
   }
 
   // Function to handle the delete button click
@@ -65,7 +64,7 @@ const FCSystemAdmin = () => {
   // Function to close the edit modal
   const closeModal = () => {
     setUserToEdit(null);
-    setToShow(false);
+    setShow(false);
   };
 
   // Render the table and the edit modal
@@ -84,9 +83,7 @@ const FCSystemAdmin = () => {
           <Users list={users} />
         </tbody>
       </table>
-      <FCEdit userToEdit={UserToEdit} toShow={ToShow} onClose={closeModal} />
+      <FCEdit userToEdit={UserToEdit} show={show} onClose={closeModal} />
     </>
   );
 };
-
-export default FCSystemAdmin;

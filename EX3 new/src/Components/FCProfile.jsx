@@ -1,29 +1,16 @@
 import { useState, useEffect } from "react";
-import FCEdit from "./FCEdit";
+import { FCEdit } from "./FCEdit";
+import { PROFILE_PROPS } from "../constants";
 
-const FCProfile = ({ currentUser }) => {
+export const FCProfile = ({ currentUser }) => {
   // State to manage the user's profile information
   const [profile, setProfile] = useState(() => {
-    let localValue = JSON.parse(localStorage.getItem("current-user"));
-    if (localValue?.firstName !== "") {
-      return localValue;
-    }
-    return {
-      userName: "",
-      password: "",
-      image: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      dateOfBirth: "",
-      city: "",
-      street: "",
-      number: "",
-    };
+    const localValue = JSON.parse(localStorage.getItem("current-user"));
+    return localValue?.firstName !== "" ? localValue : PROFILE_PROPS;
   });
 
   // State to manage whether the edit modal should be shown
-  const [ToShow, setToShow] = useState(false);
+  const [show, setShow] = useState(false);
 
   // Effect to update the profile state when the currentUser prop changes
   useEffect(() => {
@@ -32,7 +19,7 @@ const FCProfile = ({ currentUser }) => {
 
   // Function to handle the "Edit Details" button click
   function handleEditBtn() {
-    setToShow(true);
+    setShow(true);
   }
 
   // Function to handle the "Game" button click
@@ -43,12 +30,12 @@ const FCProfile = ({ currentUser }) => {
   // Function to handle the "Log Out" button click
   function handleLogOut() {
     localStorage.removeItem("current-user");
-    location.reload();
+    window.location.reload();
   }
 
   // Function to handle modal closing
   const closeModal = () => {
-    setToShow(false);
+    setShow(false);
   };
 
   // rendering the user's profile information and buttons
@@ -94,9 +81,7 @@ const FCProfile = ({ currentUser }) => {
           </div>
         </div>
       </div>
-      <FCEdit userToEdit={profile} toShow={ToShow} onClose={closeModal} />
+      <FCEdit userToEdit={profile} show={show} onClose={closeModal} />
     </>
   );
 };
-
-export default FCProfile;

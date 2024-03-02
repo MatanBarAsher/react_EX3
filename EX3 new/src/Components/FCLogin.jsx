@@ -1,28 +1,16 @@
 import { useState, useEffect } from "react";
+import { PROFILE_PROPS } from "../constants";
 
-const FCLogin = () => {
+export const FCLogin = () => {
   // State for user list, form data, error messages, and current user
   const [users, setUsers] = useState([]);
   const [data, setData] = useState({ userName: "", password: "" });
   const [error, setError] = useState("");
   const [currentUser, setCurrentUser] = useState(() => {
     // Load current user from local storage or initialize an empty user object
-    let localValue = JSON.parse(localStorage.getItem("current-user"));
-    if (localValue?.userName) {
-      return localValue;
-    }
-    return {
-      userName: "",
-      password: "",
-      image: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      dateOfBirth: "",
-      city: "",
-      street: "",
-      number: "",
-    };
+    const localValue = JSON.parse(localStorage.getItem("current-user"));
+
+    return localValue?.userName ? localValue : PROFILE_PROPS;
   });
 
   // Load users from local storage when the component mounts
@@ -109,5 +97,3 @@ const FCLogin = () => {
     </>
   );
 };
-
-export default FCLogin;
